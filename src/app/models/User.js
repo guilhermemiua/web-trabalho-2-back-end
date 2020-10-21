@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false,
     },
-    user_category_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -38,9 +34,14 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.associate = (models) => {
-    User.belongsTo(models.UserCategory, {
-      as: 'user_category',
-      foreignKey: 'user_category_id',
+    User.hasMany(models.TransactionCategory, {
+      as: 'transaction_categories',
+      foreignKey: 'user_id',
+      targetKey: 'id',
+    });
+    User.hasMany(models.Transaction, {
+      as: 'transactions',
+      foreignKey: 'user_id',
       targetKey: 'id',
     });
   };

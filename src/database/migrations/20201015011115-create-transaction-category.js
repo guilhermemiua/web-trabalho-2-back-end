@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('user_categories', {
+    return queryInterface.createTable('transaction_categories', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,12 +12,7 @@ module.exports = {
         references: {
           model: 'users',
           key: 'id',
-      },
-      user_category_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id',
+        },
       },
       name: {
         type: Sequelize.STRING,
@@ -35,6 +30,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('user_categories');
+    return queryInterface.dropTable('transaction_categories');
   },
 };

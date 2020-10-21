@@ -1,4 +1,4 @@
-const { User, UserCategory } = require('../models');
+const { User, Transaction } = require('../models');
 const { encryptPassword } = require('../helpers');
 
 class UserController {
@@ -6,7 +6,6 @@ class UserController {
     try {
       const {
         email,
-        user_category_id,
         password,
       } = request.body;
 
@@ -14,7 +13,6 @@ class UserController {
 
       const user = await User.create({
         email,
-        user_category_id,
         password: passwordHashed,
       });
 
@@ -22,28 +20,6 @@ class UserController {
     } catch (error) {
       console.log(error);
       return response.status(401).json({ message: 'Erro no cadastro de Usuário' });
-    }
-  }
-
-  async update(request, response) {
-    try {
-      const { id } = request.params;
-      const {
-        user_category_id,
-      } = request.body;
-
-      const user = await User.update({
-        user_category_id,
-      }, {
-        where: {
-          id: Number(id),
-        },
-      });
-
-      return response.status(201).json(user);
-    } catch (error) {
-      console.log(error);
-      return response.status(401).json({ message: 'Erro na atualização da Empresa' });
     }
   }
 
@@ -80,8 +56,8 @@ class UserController {
           limit: Number(limit),
           include: [
             {
-              model: UserCategory,
-              as: 'user_category',
+              model: Transaction,
+              as: 'transactions',
             },
           ],
         });
@@ -89,8 +65,8 @@ class UserController {
         users = await User.findAll({
           include: [
             {
-              model: UserCategory,
-              as: 'user_category',
+              model: Transaction,
+              as: 'transactions',
             },
           ],
         });
@@ -109,8 +85,8 @@ class UserController {
       const user = await User.findByPk(Number(id), {
         include: [
           {
-            model: UserCategory,
-            as: 'user_category',
+            model: Transaction,
+            as: 'transactions',
           },
         ],
       });
