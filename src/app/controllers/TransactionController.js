@@ -6,12 +6,14 @@ class TransactionController {
       const { userId } = request;
       const {
         name,
+        type,
         amount,
         transaction_category_id,
       } = request.body;
 
       const transaction = await Transaction.create({
         name,
+        type,
         amount,
         transaction_category_id,
         user_id: userId,
@@ -29,12 +31,14 @@ class TransactionController {
       const { id } = request.params;
       const {
         name,
+        type,
         amount,
         transaction_category_id,
       } = request.body;
 
       const transaction = await Transaction.update({
         name,
+        type,
         amount,
         transaction_category_id,
       }, {
@@ -51,18 +55,18 @@ class TransactionController {
 
   async findAll(request, response) {
     try {
-      const transactionCategories = await Transaction.findAll();
+      const transactions = await Transaction.findAll();
 
-      return response.status(200).json(transactionCategories);
+      return response.status(200).json(transactions);
     } catch (error) {
       console.log(error);
-      return response.status(401).json({ message: 'Error at transactiones search' });
+      return response.status(401).json({ message: 'Error at transactions search' });
     }
   }
 
   async findUserTransactions(request, response) {
     try {
-      const transactionCategories = await Transaction.findAll({
+      const transactions = await Transaction.findAll({
         include: [
           {
             model: TransactionCategory,
@@ -71,10 +75,10 @@ class TransactionController {
         ],
       });
 
-      return response.status(200).json(transactionCategories);
+      return response.status(200).json(transactions);
     } catch (error) {
       console.log(error);
-      return response.status(401).json({ message: 'Error at transactiones search' });
+      return response.status(401).json({ message: 'Error at transactions search' });
     }
   }
 
