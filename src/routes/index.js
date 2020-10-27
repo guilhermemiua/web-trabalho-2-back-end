@@ -12,6 +12,8 @@ routes.post('/users/authenticate', UserController.authenticate);
 // Authenticated routes
 routes.use(authMiddleware);
 
+routes.get('/users/transaction-categories', TransactionCategoryController.findCategoriesByUser);
+
 routes.get('/users', UserController.findAll);
 routes.get('/users/:id', UserController.findById);
 

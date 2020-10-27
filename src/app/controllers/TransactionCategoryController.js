@@ -52,6 +52,23 @@ class TransactionCategoryController {
     }
   }
 
+  async findCategoriesByUser(request, response) {
+    try {
+      const { userId } = request;
+
+      const transactionCategories = await TransactionCategory.findAll({
+        where: {
+          user_id: userId,
+        },
+      });
+
+      return response.status(200).json(transactionCategories);
+    } catch (error) {
+      console.log(error);
+      return response.status(401).json({ message: 'Error at categories search' });
+    }
+  }
+
   async findById(request, response) {
     try {
       const { id } = request.params;

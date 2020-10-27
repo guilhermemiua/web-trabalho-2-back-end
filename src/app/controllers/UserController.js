@@ -9,6 +9,16 @@ class UserController {
         password,
       } = request.body;
 
+      const userAlreadyExists = await User.findOne({
+        where: {
+          email,
+        },
+      });
+
+      if (userAlreadyExists) {
+        return response.status(401).json({ message: 'Email already registered' });
+      }
+
       const passwordHashed = await encryptPassword(password);
 
       const user = await User.create({
@@ -19,7 +29,7 @@ class UserController {
       return response.status(201).json(user);
     } catch (error) {
       console.log(error);
-      return response.status(401).json({ message: 'Erro no cadastro de Usuário' });
+      return response.status(401).json({ message: 'Error at user register' });
     }
   }
 
@@ -30,17 +40,17 @@ class UserController {
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
-        return response.status(401).json({ message: 'Senha ou Email incorreto' });
+        return response.status(401).json({ message: 'Password or email incorrect' });
       }
 
       if (!(await user.checkPassword(password))) {
-        return response.status(401).json({ message: 'Senha ou Email incorreto' });
+        return response.status(401).json({ message: 'Password or email incorrect' });
       }
 
       return response.status(200).json({ user, token: user.generateToken() });
     } catch (error) {
       console.log(error);
-      return response.status(401).json({ message: 'Erro na autenticação da empresa' });
+      return response.status(401).json({ message: 'Error at authentication' });
     }
   }
 

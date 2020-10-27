@@ -66,7 +66,12 @@ class TransactionController {
 
   async findUserTransactions(request, response) {
     try {
+      const { userId } = request;
+
       const transactions = await Transaction.findAll({
+        where: {
+          user_id: userId,
+        },
         include: [
           {
             model: TransactionCategory,
